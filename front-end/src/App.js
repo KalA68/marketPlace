@@ -27,10 +27,10 @@ function App() {
          
             <Route exact path="/" element={<Home />}/>
             <Route exact path ="/login" element={<Login />} />
-            <Route exact path = "/product" element={<ProductDetail />} />
             <Route exact path = "/cart" element={<Cart />} />
             <Route exact path = "/register" element={<Register />} />
             <Route exact path = "/payment" element={<Payment />} />
+            <Route exact path = "/product/:id" element={<ProductDetail />} />
             
         </Routes>
       </div>

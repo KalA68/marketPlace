@@ -1,33 +1,56 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
+import { addToCart } from '../Store/Slices/cartSlice.js';
+import { fetchProductById } from '../Store/Slices/productDetailSlice.js';
 
-function ProductDetail () {
-    //     for(let i=1;i<6;i++) document.getElementById("qty").innerHTML(<option key={i} value={i}>i</option>)
+
+function ProductDetail (props) {
+    const {id} = useParams();
+    const dispatch = useDispatch();
     
+
+    //Hooks & Handlers
+    useEffect( ()=>{
+        dispatch(fetchProductById(id));
+    }, [dispatch, id]);
+
+    const addToCartHandler = () => {
+        dispatch(addToCart());
+    }
+    const data = useSelector(state=>state.productDetail);
+    console.log(data);
+    const product = data;
+    console.log( product);
+
+    const options = [];
+    for (let i=1; i<product.countinstock; i++) {
+        options.push(`<option value = "${i}">${i}</option>`)
+    }
+
+    
+
     return(
         <div className="buy-container">
         <div className="product-container">
             <div className="img-container">
-                <img src="./shoe1.jpg" alt = "shoe1"></img>
+                <img src={product.image} alt = {product.name}></img>
             </div>
             <div className="product-details">
-                <h3>Shoe 1</h3>
-                <p>Comfy Shoes that are great to wear casually or for sport pursuits.</p>
-                <div className="price">£95.00</div>
+                <h3>{product.name}</h3>
+                <p>{product.description}</p>
+                <div className="price">£{product.price}</div>
             </div>
 
             <div className="buy">
 
             <div className="qty">
                 <label for="qty">Qty</label>
-                <select id="qty" onChange={e=>e.target.value}> 
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
+                <select id="qty" onChange={e=>e.target.value}>   
+                    {options}
                 </select>
             </div>
-            <button type="submit">Add</button>           
+            <button type="submit" onClick={addToCartHandler}>Add</button>           
             </div>
         
         </div>

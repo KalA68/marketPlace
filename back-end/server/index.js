@@ -54,14 +54,25 @@ app.get("/api/user/:id");
 //get products
 app.get("/api/products", async (req, res) => {
     try {
-        const products = await pool.query("SELECT * FROM products");
-        res.json(products);
+        const products = await pool.query("SELECT id, name, description, price, image, countinstock FROM products");
+        res.json(products.rows);
     } catch (err) {
         res.json(err);
     }
 });
-//get individual product
-app.get("/api/product/:id");
+//get product by ID
+app.get("/api/product/:id", async (req, res) =>{
+    try{
+        const { id } = req.params;
+        console.log(req.params);
+        const product = await pool.query("SELECT id, name, description, price, image, countinstock FROM products WHERE id=$1", [id]);
+        res.json(product.rows);
+        console.log(product);
+
+    } catch (err) {
+        res.json(err);
+    }
+});
 //create an order
 app.post("api/orders")
 
