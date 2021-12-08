@@ -5,7 +5,7 @@ export const fetchProductById = createAsyncThunk(
     async(id) => {
         try {
             const response = await fetch(`/api/product/${id}`);
-            return response.json();
+            return await response.json();
 
         } catch (error) {
             return ({error: error.message});
@@ -20,9 +20,11 @@ export const productDetailSlice = createSlice({
 
     initialState: {       
         productDetail: [],
+        qty: null,
         status: null,
     },
-    reducers:{},
+    reducers:{
+    },
     extraReducers: {
         [fetchProductById.pending]: (state)=>{
             state.status = "loading";
@@ -37,6 +39,7 @@ export const productDetailSlice = createSlice({
 
     }
 });
-//no actions for reducer to export - only extraReducers
+//export actions
+
 //export reducer
 export default productDetailSlice.reducer;

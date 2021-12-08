@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { addToCart } from '../Store/Slices/cartSlice.js';
@@ -15,27 +15,23 @@ function ProductDetail (props) {
         dispatch(fetchProductById(id));
     }, [dispatch, id]);
 
-    const addToCartHandler = () => {
-        dispatch(addToCart());
-    }
-    const data = useSelector(state=>state.productDetail);
-    console.log(data);
-    const product = data;
-    console.log( product);
+    const [qty, setQty] = useState();
 
-    const options = [];
-    for (let i=1; i<product.countinstock; i++) {
-        options.push(`<option value = "${i}">${i}</option>`)
-    }
-
+    const product = useSelector((state) => state.productDetail.productDetail[0]);
+    console.log(product);
     
+    const addToCartHandler = () => {
+
+        dispatch(addToCart(product, qty));
+    }
 
     return(
         <div className="buy-container">
         <div className="product-container">
-            <div className="img-container">
-                <img src={product.image} alt = {product.name}></img>
-            </div>
+            
+             <div className="img-container"> 
+                <img src="./images/shoe1.jpg" alt={product.name}></img>
+            </div> 
             <div className="product-details">
                 <h3>{product.name}</h3>
                 <p>{product.description}</p>
@@ -46,13 +42,17 @@ function ProductDetail (props) {
 
             <div className="qty">
                 <label for="qty">Qty</label>
-                <select id="qty" onChange={e=>e.target.value}>   
-                    {options}
+                <select id="qty" onChange={(e)=>setQty(e.target.value)}>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
                 </select>
+            </div> 
+             <button type="submit" onClick={addToCartHandler}>Add</button>
             </div>
-            <button type="submit" onClick={addToCartHandler}>Add</button>           
-            </div>
-        
+         
         </div>
     </div>
         
